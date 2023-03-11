@@ -104,7 +104,7 @@ namespace A3_BusinessGroupProjectApi.Controllers
         }
 
         // DELETE: /Organization/{organizationId}
-        [HttpDelete("{organizationId")]
+        [HttpDelete("{organizationId}")]
 
         public async Task<IActionResult> DeleteOrganization(Guid organizationId)
         {

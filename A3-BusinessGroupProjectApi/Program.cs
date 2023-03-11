@@ -4,11 +4,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers()
-    .AddXmlDataContractSerializerFormatters()
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
     });
+
 
 var app = builder.Build();
 
@@ -29,7 +29,7 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllers();
 });
 
-app.Use((context, next) =>
+/*app.Use((context, next) =>
 {
     if (context.Request.Headers.ContainsKey("Accept"))
     {
@@ -58,6 +58,14 @@ app.Use((context, next) =>
     }
 
     return next();
+});*/
+app.Run(async (context) =>
+{
+    context.Response.StatusCode = StatusCodes.Status200OK;
+    await context.Response.WriteAsync("Hello World");
 });
+
+
+
 
 app.Run();
