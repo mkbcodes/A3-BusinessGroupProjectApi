@@ -28,7 +28,15 @@ namespace A3_BusinessGroupProjectApi.Controllers
             _context.Immunizations.Add(immunization);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetImmunizationById), new { id = immunization.Id }, immunization);
+            //return CreatedAtAction(nameof(GetImmunizationById), new { id = immunization.Id }, immunization);
+            return CreatedAtAction(nameof(GetImmunization), new { id = immunization.Id }, immunization);
+        }
+
+        // GET: api/Immunization
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Immunization>>> GetImmunization()
+        {
+            return await _context.Immunizations.ToListAsync();
         }
 
         // GET: /Immunization/{immunizationId}
@@ -45,19 +53,20 @@ namespace A3_BusinessGroupProjectApi.Controllers
             return immunization;
         }
 
-        // GET: /Immunization?creationTime={value}
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Immunization>>> GetImmunizationsByCreationTime(DateTimeOffset value)
-        {
-            var immunizations = await _context.Immunizations.Where(i => i.CreationTime == value).ToListAsync();
 
-            if (!immunizations.Any())
-            {
-                return NotFound(CreateErrorMessage("No immunizations found for the specified creation time", StatusCodes.Status404NotFound));
-            }
+        //// GET: /Immunization?creationTime={value}
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<Immunization>>> GetImmunizationsByCreationTime(DateTimeOffset value)
+        //{
+        //    var immunizations = await _context.Immunizations.Where(i => i.CreationTime == value).ToListAsync();
 
-            return immunizations;
-        }
+        //    if (!immunizations.Any())
+        //    {
+        //        return NotFound(CreateErrorMessage("No immunizations found for the specified creation time", StatusCodes.Status404NotFound));
+        //    }
+
+        //    return immunizations;
+        //}
 
         // PUT: /Immunization/{immunizationId}
         [HttpPut("{immunizationId}")]
