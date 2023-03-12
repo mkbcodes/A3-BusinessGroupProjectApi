@@ -1,6 +1,12 @@
+using A3_BusinessGroupProjectApi.Data;
+using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Default") ?? throw new InvalidOperationException("Connection string not found.")));
+
 
 // Add services to the container.
 builder.Services.AddControllers()
@@ -69,3 +75,7 @@ app.Run(async (context) =>
 
 
 app.Run();
+
+
+
+

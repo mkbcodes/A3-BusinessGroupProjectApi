@@ -6,10 +6,14 @@ namespace A3_BusinessGroupProjectApi.Data
 {
     public class AppDbContext : DbContext
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public AppDbContext(DbContextOptions<AppDbContext> options)
+    : base(options)
         {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=BusinessGroupProject;Trusted_Connection=True;MultipleActiveResultSets=true");
         }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=BusinessGroupProject;Trusted_Connection=True;MultipleActiveResultSets=true");
+        //}
 
         public DbSet<Immunization> Immunizations { get; set; }
         public DbSet<Organization> Organizations { get; set; }

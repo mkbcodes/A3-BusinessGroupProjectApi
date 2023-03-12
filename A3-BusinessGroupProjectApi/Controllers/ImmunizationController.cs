@@ -59,48 +59,6 @@ namespace A3_BusinessGroupProjectApi.Controllers
             return immunizations;
         }
 
-        // GET: /Immunization?officialName={value}
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Immunization>>> GetImmunizationsByOfficialName(string value)
-        {
-            var immunizations = await _context.Immunizations.Where(i => i.OfficialName == value).ToListAsync();
-
-            if (!immunizations.Any())
-            {
-                return NotFound(CreateErrorMessage("No immunizations found for the specified official name", StatusCodes.Status404NotFound));
-            }
-
-            return immunizations;
-        }
-
-        // GET: /Immunization?tradeName ={value}
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Immunization>>> GetImmunizationsByTradeName(string value)
-        {
-            var immunizations = await _context.Immunizations.Where(i => i.TradeName == value).ToListAsync();
-
-            if (!immunizations.Any())
-            {
-                return NotFound(CreateErrorMessage("No immunizations found for the specified trade name", StatusCodes.Status404NotFound));
-            }
-
-            return immunizations;
-        }
-
-        // GET: /Immunization?lotNumber={value}
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Immunization>>> GetImmunizationsByLotNumber(string value)
-        {
-            var immunizations = await _context.Immunizations.Where(i => i.LotNumber == value).ToListAsync();
-
-            if (!immunizations.Any())
-            {
-                return NotFound(CreateErrorMessage("No immunizations found for the specified lot number", StatusCodes.Status404NotFound));
-            }
-
-            return immunizations;
-        }
-
         // PUT: /Immunization/{immunizationId}
         [HttpPut("{immunizationId}")]
         public async Task<IActionResult> UpdateImmunization(Guid immunizationId, Immunization immunization)
