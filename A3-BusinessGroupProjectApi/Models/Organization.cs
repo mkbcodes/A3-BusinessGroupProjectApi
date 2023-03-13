@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
+using System.Xml.Linq;
 
 namespace A3_BusinessGroupProjectApi.Models
 {
@@ -12,10 +14,12 @@ namespace A3_BusinessGroupProjectApi.Models
 
         [Required]
         [MaxLength(256)]
+        [BindProperty(Name = "Name", SupportsGet = true)]
         public string Name { get; set; }
 
         [Required]
         [EnumDataType(typeof(OrganizationType))]
+        [BindProperty(Name = "Type", SupportsGet = true)]
         public string Type { get; set; }
 
         [Required]

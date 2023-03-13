@@ -12,7 +12,6 @@ namespace A3_BusinessGroupProjectApi.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    [BindProperties]
     public class ImmunizationController : ControllerBase
     {
         private readonly AppDbContext _context;

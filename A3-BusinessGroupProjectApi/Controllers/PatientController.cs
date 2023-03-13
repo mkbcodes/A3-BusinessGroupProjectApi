@@ -28,8 +28,29 @@ namespace A3_BusinessGroupProjectApi.Controllers
             _context.Patients.Add(patient);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetPatientById), new { id = patient.Id }, patient);
+            return CreatedAtAction(nameof(GetPatient), new { id = patient.Id }, patient);
         }
+
+        // GET: api/Patient
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Patient>>> GetPatient([FromQuery] DateTimeOffset? DateOfBirth, [FromQuery] string? FirstName, [FromQuery] string? LastName)
+        {
+            if (FirstName != null)
+            {
+                return await _context.Patients.Where(i => i.FirstName == FirstName).ToListAsync();
+            }
+            else if (LastName != null)
+            {
+                return await _context.Patients.Where(i => i.LastName == LastName).ToListAsync();
+            }
+            else if (DateOfBirth != null)
+            {
+                return await _context.Patients.Where(i => i.DateOfBirth == DateOfBirth).ToListAsync();
+            }
+
+            return await _context.Patients.ToListAsync();
+        }
+
 
         // GET: /Patient/{patientId}
         [HttpGet("{patientId}")]
@@ -73,48 +94,6 @@ namespace A3_BusinessGroupProjectApi.Controllers
             }
 
             return NoContent();
-        }
-
-        // GET: /Patient?firstName={value}
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Patient>>> GetPatientsByFirstName(string value)
-        {
-            var patients = await _context.Patients.Where(p => p.FirstName == value).ToListAsync();
-
-            if (!patients.Any())
-            {
-                return NotFound(CreateErrorMessage("No patients found for the specified first name", StatusCodes.Status404NotFound));
-            }
-
-            return patients;
-        }
-
-        // GET: /Patient?lastName={value}
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Patient>>> GetPatientsByLastName(string value)
-        {
-            var patients = await _context.Patients.Where(p => p.LastName == value).ToListAsync();
-
-            if (!patients.Any())
-            {
-                return NotFound(CreateErrorMessage("No patients found for the specified last name", StatusCodes.Status404NotFound));
-            }
-
-            return patients;
-        }
-
-        // GET: /Patient?dateOfBirth={value}
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Patient>>> GetPatientsByDateOfBirth(DateTimeOffset value)
-        {
-            var patients = await _context.Patients.Where(p => p.DateOfBirth == value).ToListAsync();
-
-            if (!patients.Any())
-            {
-                return NotFound(CreateErrorMessage("No patients found for the specified date of birth", StatusCodes.Status404NotFound));
-            }
-
-            return patients;
         }
 
         // DELETE: /Patient/{patientId}

@@ -28,7 +28,8 @@ namespace A3_BusinessGroupProjectApi.Controllers
             _context.Organizations.Add(organization);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetOrganizationById), new { id = organization.Id }, organization);
+            return CreatedAtAction(nameof(GetOrganization), new { id = organization.Id }, organization);
+
         }
 
         // GET: /Organization/{organizationId}
@@ -43,6 +44,21 @@ namespace A3_BusinessGroupProjectApi.Controllers
             }
 
             return organization;
+        }
+        // GET: api/Organization
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Organization>>> GetOrganization([FromQuery] string? Name, [FromQuery] string? Type)
+        {
+            if (Name != null)
+            {
+                return await _context.Organizations.Where(i => i.Name == Name).ToListAsync();
+            }
+            else if (Type != null)
+            {
+                return await _context.Organizations.Where(i => i.Type == Type).ToListAsync();
+            }
+
+            return await _context.Organizations.ToListAsync();
         }
 
         // PUT: /Organization/{organizationId}
@@ -73,34 +89,6 @@ namespace A3_BusinessGroupProjectApi.Controllers
             }
 
             return NoContent();
-        }
-
-        // GET: /Organization?name={value}
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Organization>>> GetOrganizationsByName(string value)
-        {
-            var organizations = await _context.Organizations.Where(o => o.Name == value).ToListAsync();
-
-            if (!organizations.Any())
-            {
-                return NotFound(CreateErrorMessage("No organizations found for the specified name", StatusCodes.Status404NotFound));
-            }
-
-            return organizations;
-        }
-
-        // GET: /Organization?type={value}
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Organization>>> GetOrganizationsByType(string value)
-        {
-            var organizations = await _context.Organizations.Where(o => o.Type == value).ToListAsync();
-
-            if (!organizations.Any())
-            {
-                return NotFound(CreateErrorMessage("No organizations found for the specified type", StatusCodes.Status404NotFound));
-            }
-
-            return organizations;
         }
 
         // DELETE: /Organization/{organizationId}

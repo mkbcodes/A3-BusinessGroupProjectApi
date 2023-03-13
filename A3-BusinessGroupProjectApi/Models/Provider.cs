@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
+using System.Xml.Linq;
 
 namespace A3_BusinessGroupProjectApi.Models
 {
@@ -12,13 +14,17 @@ namespace A3_BusinessGroupProjectApi.Models
 
         [Required]
         [MaxLength(128)]
+        [BindProperty(Name = "FirstName", SupportsGet = true)]
+
         public string FirstName { get; set; }
 
         [Required]
         [MaxLength(128)]
+        [BindProperty(Name = "LastName", SupportsGet = true)]
         public string LastName { get; set; }
 
         [Required]
+        [BindProperty(Name = "LicenseNumber", SupportsGet = true)]
         public uint LicenseNumber { get; set; }
 
         [Required]

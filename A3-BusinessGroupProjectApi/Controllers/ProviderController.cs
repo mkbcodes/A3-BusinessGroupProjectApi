@@ -29,7 +29,26 @@ namespace A3_BusinessGroupProjectApi.Controllers
             _context.Providers.Add(provider);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetProviderById), new { id = provider.Id }, provider);
+            return CreatedAtAction(nameof(GetProvider), new { id = provider.Id }, provider);
+        }
+        // GET: api/Immunization
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Provider>>> GetProvider([FromQuery] string? FirstName, [FromQuery] string? LastName, [FromQuery] uint? LicenseNumber)
+        {
+            if (FirstName != null)
+            {
+                return await _context.Providers.Where(i => i.FirstName == FirstName).ToListAsync();
+            }
+            else if (LastName != null)
+            {
+                return await _context.Providers.Where(i => i.LastName == LastName).ToListAsync();
+            }
+            else if (LicenseNumber != null)
+            {
+                return await _context.Providers.Where(i => i.LicenseNumber == LicenseNumber).ToListAsync();
+            }
+
+            return await _context.Providers.ToListAsync();
         }
 
         // GET: /Provider/{providerId}
@@ -75,49 +94,6 @@ namespace A3_BusinessGroupProjectApi.Controllers
 
             return NoContent();
         }
-
-        // GET: /Provider?firstName={value}
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Provider>>> GetProvidersByFirstName(string value)
-        {
-            var providers = await _context.Providers.Where(p => p.FirstName == value).ToListAsync();
-
-            if (!providers.Any())
-            {
-                return NotFound(CreateErrorMessage("No providers found for the specified first name", StatusCodes.Status404NotFound));
-            }
-
-            return providers;
-        }
-
-        // GET: /Provider?lastName={value}
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Provider>>> GetProvidersByLastName(string value)
-        {
-            var providers = await _context.Providers.Where(p => p.LastName == value).ToListAsync();
-
-            if (!providers.Any())
-            {
-                return NotFound(CreateErrorMessage("No providers found for the specified last name", StatusCodes.Status404NotFound));
-            }
-
-            return providers;
-        }
-
-        // GET: /Provider?licenseNumber={value}
-        [HttpGet]
-        public async Task<ActionResult<Provider>> GetProvidersByLicenseNumber(uint value)
-        {
-            var provider = await _context.Providers.SingleOrDefaultAsync(p => p.LicenseNumber == value);
-
-            if (provider == null)
-            {
-                return NotFound(CreateErrorMessage("Provider not found for the specified license number", StatusCodes.Status404NotFound));
-            }
-
-            return provider;
-        }
-
 
         // DELETE: /Provider/{providerId}
         [HttpDelete("{providerId}")]
