@@ -28,7 +28,6 @@ namespace A3_BusinessGroupProjectApi.Controllers
             _context.Immunizations.Add(immunization);
             await _context.SaveChangesAsync();
 
-            //return CreatedAtAction(nameof(GetImmunizationById), new { id = immunization.Id }, immunization);
             return CreatedAtAction(nameof(GetImmunization), new { id = immunization.Id }, immunization);
         }
 
@@ -54,19 +53,19 @@ namespace A3_BusinessGroupProjectApi.Controllers
         }
 
 
-        //// GET: /Immunization?creationTime={value}
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<Immunization>>> GetImmunizationsByCreationTime(DateTimeOffset value)
-        //{
-        //    var immunizations = await _context.Immunizations.Where(i => i.CreationTime == value).ToListAsync();
+        // GET: /Immunization?creationTime={value}
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Immunization>>> GetImmunizationsByCreationTime(DateTimeOffset value)
+        {
+            var immunizations = await _context.Immunizations.Where(i => i.CreationTime == value).ToListAsync();
 
-        //    if (!immunizations.Any())
-        //    {
-        //        return NotFound(CreateErrorMessage("No immunizations found for the specified creation time", StatusCodes.Status404NotFound));
-        //    }
+            if (!immunizations.Any())
+            {
+                return NotFound(CreateErrorMessage("No immunizations found for the specified creation time", StatusCodes.Status404NotFound));
+            }
 
-        //    return immunizations;
-        //}
+            return immunizations;
+        }
 
         // PUT: /Immunization/{immunizationId}
         [HttpPut("{immunizationId}")]
@@ -74,7 +73,7 @@ namespace A3_BusinessGroupProjectApi.Controllers
         {
             if (immunizationId != immunization.Id)
             {
-                return BadRequest(CreateErrorMessage("The immunization id provided in the request body does not match the id in the URL", StatusCodes.Status400BadRequest));
+                return BadRequest(CreateErrorMessage($"The immunization id provided in the request body does not match the id in the URL; id1={immunizationId} id2={immunization.Id}", StatusCodes.Status400BadRequest));
             }
 
             _context.Entry(immunization).State = EntityState.Modified;

@@ -1,9 +1,9 @@
-﻿internal class Startup
-{
-    private ConfigurationManager configuration;
+﻿//internal class Startup
+//{
+//    private ConfigurationManager configuration;
 
-    public Startup(ConfigurationManager configuration)
-    {
-        this.configuration = configuration;
-    }
-}
+//    public Startup(ConfigurationManager configuration)
+//    {
+//        this.configuration = configuration;
+//    }
+//}
