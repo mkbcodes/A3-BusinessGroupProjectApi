@@ -12,6 +12,7 @@ namespace A3_BusinessGroupProjectApi.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [BindProperties]
     public class ImmunizationController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -33,8 +34,30 @@ namespace A3_BusinessGroupProjectApi.Controllers
 
         // GET: api/Immunization
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Immunization>>> GetImmunization()
+        public async Task<ActionResult<IEnumerable<Immunization>>> GetImmunization([FromQuery]DateTimeOffset? CreationTime, [FromQuery]string? OfficialName, [FromQuery] string? TradeName, [FromQuery]string? LotNumber)
         {
+            if (CreationTime != null)
+            {
+                return await _context.Immunizations.Where(i => i.CreationTime == CreationTime).ToListAsync();
+            }
+            else if (OfficialName != null)
+            {
+                return await _context.Immunizations.Where(i => i.OfficialName == OfficialName).ToListAsync();
+            }
+            else if (LotNumber != null)
+            {
+                return await _context.Immunizations.Where(i => i.LotNumber == LotNumber).ToListAsync();
+            }
+            else if (TradeName != null)
+            {
+                return await _context.Immunizations.Where(i => i.TradeName == TradeName).ToListAsync();
+            }
+            // params
+            // params with switch statements with multuple returns
+            Console.WriteLine($"OfficialName {OfficialName}");
+            Console.WriteLine($"TradeName {TradeName}");
+            Console.WriteLine($"LotNumber {LotNumber}");
+            Console.WriteLine($"CreationTime {CreationTime}");
             return await _context.Immunizations.ToListAsync();
         }
 
@@ -53,19 +76,19 @@ namespace A3_BusinessGroupProjectApi.Controllers
         }
 
 
-        // GET: /Immunization?creationTime={value}
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Immunization>>> GetImmunizationsByCreationTime(DateTimeOffset value)
-        {
-            var immunizations = await _context.Immunizations.Where(i => i.CreationTime == value).ToListAsync();
+        //// GET: /Immunization?creationTime={value}
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<Immunization>>> GetImmunizationsByCreationTime(DateTimeOffset value)
+        //{
+        //    var immunizations = await _context.Immunizations.Where(i => i.CreationTime == value).ToListAsync();
 
-            if (!immunizations.Any())
-            {
-                return NotFound(CreateErrorMessage("No immunizations found for the specified creation time", StatusCodes.Status404NotFound));
-            }
+        //    if (!immunizations.Any())
+        //    {
+        //        return NotFound(CreateErrorMessage("No immunizations found for the specified creation time", StatusCodes.Status404NotFound));
+        //    }
 
-            return immunizations;
-        }
+        //    return immunizations;
+        //}
 
         // PUT: /Immunization/{immunizationId}
         [HttpPut("{immunizationId}")]
